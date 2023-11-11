@@ -5,11 +5,14 @@ function App() {
   function handleAddItems(item) {
     setItems((items) => [...items, item]);
   }
+  function handleDelete(id) {
+    setItems((items) => items.filter((item) => item.id !== id));
+  }
   return (
     <div>
       <Logo />
       <Form onAddItems={handleAddItems} />
-      <PackagingList items={items} />
+      <PackagingList items={items} onDeleteItem={handleDelete} />
       <Summary />
     </div>
   );
@@ -53,24 +56,24 @@ function Form({ onAddItems }) {
     </form>
   );
 }
-function PackagingList({ items }) {
+function PackagingList({ items, onDeleteItem }) {
   return (
     <div className="list">
       <ul>
         {items.map((item) => (
-          <Item item={item} key={item.id} />
+          <Item item={item} onDeleteItem={onDeleteItem} key={item.id} />
         ))}
       </ul>
     </div>
   );
 }
-function Item({ item }) {
+function Item({ item, onDeleteItem }) {
   return (
     <li>
       <span style={item.packed ? { textDecoration: "line-through" } : {}}>
         {item.quantity} {item.description}
       </span>
-      <button>❌</button>
+      <button onClick={() => onDeleteItem(item.id)}>❌</button>
     </li>
   );
 }
