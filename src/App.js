@@ -24,7 +24,7 @@ function App() {
         onDeleteItem={handleDelete}
         onToggleItem={handleToggleItem}
       />
-      <Summary />
+      <Summary items={items} />
     </div>
   );
 }
@@ -100,7 +100,17 @@ function Item({ item, onDeleteItem, onToggleItem }) {
     </li>
   );
 }
-function Summary() {
-  return <footer className="stats"></footer>;
+function Summary({ items }) {
+  const numItems = items.length;
+  const packedItems = items.filter((item) => item.packed === true).length;
+  const percentPacked = (packedItems / numItems) * 100;
+  return (
+    <footer className="stats">
+      <em>
+        You have {numItems} on your list, and you already packed {packedItems} (
+        {percentPacked}%)
+      </em>
+    </footer>
+  );
 }
 export default App;
